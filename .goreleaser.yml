@@ -1,8 +1,9 @@
+version: 2
 brews:
-  - tap:
+  - repository:
         owner: muquit
         name: applehealth2csv
-    folder: Formula
+    directory: Formula
     homepage: https://github.com/muquit/applehealth2csv
     description: "Command line tool to convert Apple Watch Health Data to CSV or JSON files"
     license: "MIT"
@@ -25,13 +26,7 @@ builds:
      - goos: linux
        goarch: 386
 archives:
-  - name_template: "{{ .ProjectName }}_{{ .Version}}_{{.Os}}-{{ .Arch }}"
-    replacements:
-      amd64: 64bit
-      darwin: mac
-      linux: linux
-      windows: windows
-      arm: ARM
+  - name_template: '{{ .ProjectName }}_{{ .Version}}_{{if eq .Os "darwin"}}macos{{else}}{{.Os}}{{end}}-{{if eq .Arch "amd64"}}64bit{{else if .Arm}}ARM{{else}}{{ .Arch }}{{end}}'
     format_overrides:
       - goos: windows
         format: zip
@@ -41,7 +36,7 @@ archives:
         - LICENSE.txt
     wrap_in_directory: applehealth2csv-dir
 nfpms:
-  - file_name_template: "{{ .ProjectName }}_{{ .Version}}_{{.Os}}-{{ .Arch }}"
+  - file_name_template: '{{ .ProjectName }}_{{ .Version}}_{{if eq .Os "darwin"}}macos{{else}}{{.Os}}{{end}}-{{if eq .Arch "amd64"}}64bit{{else if .Arm}}ARM{{else}}{{ .Arch }}{{end}}'
     homepage:  "https://muquit.com/"
     description: "Command like tool to convert Apple Watch Health Data to CSV or JSON files"
     maintainer: "Muhammad Muquit <muquit@muquit.com>"
@@ -50,10 +45,6 @@ nfpms:
     formats:
     - deb
     - rpm
-    replacements:
-      amd64: 64bit
-      linux: linux
-      arm: ARM
     bindir: /usr/local/bin
     contents:
       - src: docs/applehealth2csv.1

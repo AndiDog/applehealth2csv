@@ -3,7 +3,7 @@
 # Wrapper for golrealse
 # Usage: release.sh   - dryrun
 #        rlease.sh ok - really rlease
-# muquit@muquit.com Jan-20-2019 
+# muquit@muquit.com Jan-20-2019
 ARGC=$#
 
 TF=$(mktemp)
@@ -19,11 +19,11 @@ create_chl
 if [[ $ARGC == 1 && $1 == "ok" ]]; then
     echo "Publish..."
     : ${GITHUB_TOKEN:?"Need to set GITHUB_TOKEN"}
-    goreleaser --release-notes=${TF}
+    goreleaser release --release-notes=${TF}
 elif [[ $ARGC == 1 && $1 == "snap" ]]; then
-    goreleaser --snapshot --skip-publish --rm-dist --release-notes=${TF}
+    goreleaser --snapshot --skip publish --rm-dist --release-notes=${TF}
 else
     echo "Dryrun.."
-    goreleaser release --skip-publish
+    goreleaser release --skip publish
 fi
 /bin/rm -f $TF
